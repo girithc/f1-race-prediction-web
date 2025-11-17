@@ -35,7 +35,7 @@ import { getMetadata, predict } from '@/lib/api-client';
 import { PitStopInput } from '@/components/pit-stop-input';
 import { PositionDistributionChart } from '@/components/charts/position-distribution-chart';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Compass } from 'lucide-react';
 
 type PredictFormData = z.infer<typeof predictRequestSchema>;
 
