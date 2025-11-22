@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import Link from 'next/link';
-import { ApexEdgeLogo } from './icons';
+import { F1RaceStrategyLogo } from './icons';
 import { getHealth } from '@/lib/api-client';
 
 const navItems = [
@@ -52,12 +52,12 @@ export function SiteHeader() {
             <SheetHeader>
               <SheetTitle>
                 <Link href="/" className="flex items-center gap-2 text-primary">
-                  <ApexEdgeLogo className="w-8 h-8" />
-                  <span className="font-headline text-2xl font-semibold">Apex Edge</span>
+                  <F1RaceStrategyLogo className="w-8 h-8" />
+                  <span className="font-headline text-2xl font-semibold">F1 Race Strategy</span>
                 </Link>
               </SheetTitle>
               <SheetDescription>
-                Navigate through the Apex Edge application features.
+                Navigate through the F1 Race Strategy application features.
               </SheetDescription>
             </SheetHeader>
             <div className="flex flex-col gap-2 py-4">
@@ -76,7 +76,7 @@ export function SiteHeader() {
       </nav>
       <div className="flex w-full items-center justify-between">
         <h1 className="text-xl font-semibold md:text-2xl font-headline">
-          {pageTitles[pathname] || 'Apex Edge'}
+          {pageTitles[pathname] || 'F1 Race Strategy'}
         </h1>
         {healthStatus && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground" title={`Model version: ${healthStatus.modelVersion}`}>

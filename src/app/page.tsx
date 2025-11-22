@@ -37,7 +37,7 @@ export default async function DashboardPage() {
         )}
         <div className="relative p-8 md:p-12">
           <h1 className="text-4xl md:text-5xl font-bold text-primary font-headline">
-            Welcome to Apex Edge
+            Welcome to F1 Race Strategy
           </h1>
           <p className="mt-2 text-lg text-foreground/90 max-w-2xl">
             Your AI-powered co-pilot for elite Formula 1 racing strategy.
@@ -88,7 +88,7 @@ export default async function DashboardPage() {
           <CardContent className="grid grid-cols-2 gap-4 text-sm">
             <Link href="/predict" className="flex items-center gap-2 hover:text-primary"><Compass size={16}/> Predict Finish</Link>
             <Link href="/compare" className="flex items-center gap-2 hover:text-primary"><BarChart3 size={16}/> Compare Strategies</Link>
-            <Link href="/whatif" className="flex items-center gap-2 hover:text-primary"><Variable size={16}/> What-If Analysis</Link>
+            <Link href="/whatif" className="flex items-center gap-2 hovertext-primary"><Variable size={16}/> What-If Analysis</Link>
             <Link href="/advisor" className="flex items-center gap-2 hover:text-primary"><Bot size={16}/> AI Advisor</Link>
           </CardContent>
         </Card>

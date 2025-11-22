@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from '@/components/ui/sidebar';
-import { ApexEdgeLogo } from '@/components/icons';
+import { F1RaceStrategyLogo } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -32,9 +32,9 @@ export function SiteSidebar() {
           href="/"
           className="flex items-center gap-2 text-primary group-data-[state=collapsed]:justify-center"
         >
-          <ApexEdgeLogo className="w-8 h-8" />
+          <F1RaceStrategyLogo className="w-8 h-8" />
           <span className="font-headline text-2xl font-semibold group-data-[state=collapsed]:hidden">
-            Apex Edge
+            F1 Race Strategy
           </span>
         </Link>
       </SidebarHeader>

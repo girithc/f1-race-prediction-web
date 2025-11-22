@@ -6,7 +6,7 @@ import { SiteHeader } from '@/components/site-header';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Apex Edge',
+  title: 'F1 Race Strategy',
   description: 'AI-Powered Racing Strategy',
 };
 
