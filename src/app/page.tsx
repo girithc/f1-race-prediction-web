@@ -11,10 +11,14 @@ import { getMetadata, getHealth } from '@/lib/api-client';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BarChart3, Bot, Compass, Variable } from 'lucide-react';
+import type { HealthzResponse, MetadataResponse } from '@/lib/types';
 
 export default async function DashboardPage() {
-  const metadata = await getMetadata().catch(() => null);
-  const health = await getHealth().catch(() => null);
+  const [health, metadata] = await Promise.all([
+    getHealth().catch(() => null),
+    getMetadata().catch(() => null),
+  ]);
+
   const heroImage = PlaceHolderImages.find((img) => img.id === 'hero-race-car');
 
   return (
