@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, Bot, Compass, Home, Variable } from 'lucide-react';
+import { BarChart3, Bot, Compass, Home, Variable, Activity } from 'lucide-react';
 
 import {
   Sidebar,
@@ -20,6 +20,8 @@ const navItems = [
   { href: '/compare', label: 'Compare', icon: BarChart3 },
   { href: '/whatif', label: 'What-If', icon: Variable },
   { href: '/advisor', label: 'AI Advisor', icon: Bot },
+    { href: '/lstm', label: 'LSTM Predictor', icon: Activity },  
+
 ];
 
 export function SiteSidebar() {

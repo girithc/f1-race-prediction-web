@@ -10,7 +10,7 @@ import {
 import { getMetadata, getHealth } from '@/lib/api-client';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BarChart3, Bot, Compass, Variable } from 'lucide-react';
+import { ArrowRight, BarChart3, Bot, Compass, Variable, Activity } from 'lucide-react';
 import type { HealthzResponse, MetadataResponse } from '@/lib/types';
 
 export default async function DashboardPage() {
@@ -86,11 +86,23 @@ export default async function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4 text-sm">
-            <Link href="/predict" className="flex items-center gap-2 hover:text-primary"><Compass size={16}/> Predict Finish</Link>
-            <Link href="/compare" className="flex items-center gap-2 hover:text-primary"><BarChart3 size={16}/> Compare Strategies</Link>
-            <Link href="/whatif" className="flex items-center gap-2 hovertext-primary"><Variable size={16}/> What-If Analysis</Link>
-            <Link href="/advisor" className="flex items-center gap-2 hover:text-primary"><Bot size={16}/> AI Advisor</Link>
+            <Link href="/predict" className="flex items-center gap-2 hover:text-primary">
+              <Compass size={16} /> Predict Finish
+            </Link>
+            <Link href="/compare" className="flex items-center gap-2 hover:text-primary">
+              <BarChart3 size={16} /> Compare Strategies
+            </Link>
+            <Link href="/whatif" className="flex items-center gap-2 hover:text-primary">
+              <Variable size={16} /> What-If Analysis
+            </Link>
+            <Link href="/advisor" className="flex items-center gap-2 hover:text-primary">
+              <Bot size={16} /> AI Advisor
+            </Link>
+            <Link href="/lstm" className="flex items-center gap-2 hover:text-primary">
+              <Activity size={16} /> In-Race LSTM Predictor
+            </Link>
           </CardContent>
+
         </Card>
       </div>
     </div>
