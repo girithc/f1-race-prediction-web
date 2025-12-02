@@ -34,10 +34,8 @@ type ScenarioForm = {
 
 type ScenarioResult = {
   name: string;
-  successProb: number;
+  predictedPosition: number;
   futurePits: { lap: number; durationMs: number }[];
-  relativeScore?: number | null;
-  rating?: number | null;
 };
 
 type StrategyResponse = {
@@ -306,17 +304,14 @@ export default function StrategyPage() {
     }
   }
 
-  function formatProb(p: number | undefined | null) {
-    if (p == null) return "-";
-    const clamped = Math.max(0, Math.min(1, p));
-    return `${(clamped * 100).toFixed(1)}%`;
+  function formatPosition(p: number) {
+    return `P${p.toFixed(1)}`;
   }
 
-  function ratingColor(rating?: number | null) {
-    if (rating == null) return "bg-slate-500";
-    if (rating >= 80) return "bg-emerald-500";
-    if (rating >= 60) return "bg-sky-500";
-    if (rating >= 40) return "bg-amber-500";
+  function positionColor(pos: number) {
+    if (pos <= 3) return "bg-emerald-500";
+    if (pos <= 10) return "bg-sky-500";
+    if (pos <= 15) return "bg-amber-500";
     return "bg-rose-500";
   }
 
@@ -614,22 +609,20 @@ export default function StrategyPage() {
                         <div
                           key={idx}
                           className={`rounded-lg border p-4 transition-all ${sc.name === result.bestScenario.name
-                              ? "border-emerald-500/70 bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
-                              : "border-slate-700/50 bg-slate-800/30"
+                            ? "border-emerald-500/70 bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
+                            : "border-slate-700/50 bg-slate-800/30"
                             }`}
                         >
                           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <h4 className="text-lg font-semibold text-slate-50">{sc.name}</h4>
                             <div className="flex items-center gap-3">
-                              <Badge className={`${ratingColor(sc.rating ?? 0)} px-3 py-1 text-sm font-bold text-slate-900`}>
-                                {sc.rating ?? 0}/100
+                              <Badge className={`${positionColor(sc.predictedPosition)} px-3 py-1 text-sm font-bold text-slate-900`}>
+                                {formatPosition(sc.predictedPosition)}
                               </Badge>
-                              <span className="text-sm text-slate-300">
-                                {formatProb(sc.successProb)} success
-                              </span>
                             </div>
                           </div>
-                          <Progress value={(sc.rating ?? 0) as number} className="mt-3 h-2 bg-slate-700" />
+                          {/* Inverted progress bar: 1.0 is full (best), 20.0 is empty (worst) */}
+                          <Progress value={Math.max(0, 100 - ((sc.predictedPosition - 1) / 19) * 100)} className="mt-3 h-2 bg-slate-700" />
                           <p className="mt-3 text-sm text-slate-400">
                             {sc.futurePits.length === 0
                               ? "Runs to the flag with no further stops"
