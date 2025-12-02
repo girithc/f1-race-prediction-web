@@ -18,8 +18,9 @@ const navItems = [
   { href: '/', label: 'Dashboard', icon: Home },
   { href: '/predict', label: 'Predict', icon: Compass },
   { href: '/compare', label: 'Compare', icon: BarChart3 },
-
-  { href: '/strategy', label: 'LSTM Predictor', icon: Activity },
+  { href: '/whatif', label: 'What-If', icon: Variable },
+  { href: '/advisor', label: 'AI Advisor', icon: Bot },
+  { href: '/strategy', label: 'LSTM Predictor', icon: Activity },  
 
 ];
 

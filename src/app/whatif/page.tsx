@@ -30,20 +30,19 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { predictRequestSchema } from '@/lib/schemas';
-import type { CircuitMeta, PredictResponse } from '@/lib/types';
-import { getMetadata, predict } from '@/lib/api-client';
+import type { CircuitMeta, WhatIfResponse } from '@/lib/types';
+import { getMetadata, whatIf } from '@/lib/api-client';
 import { PitStopInput } from '@/components/pit-stop-input';
-import { PositionDistributionChart } from '@/components/charts/position-distribution-chart';
-import ExplanationCard from '@/components/explanation-card';
+import { WhatIfGridChart } from '@/components/charts/what-if-grid-chart';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Compass } from 'lucide-react';
+import { Loader2, Variable } from 'lucide-react';
 
-type PredictFormData = z.infer<typeof predictRequestSchema>;
+type WhatIfFormData = z.infer<typeof predictRequestSchema>;
 
-export default function PredictPage() {
+export default function WhatIfPage() {
   const { toast } = useToast();
   const [circuits, setCircuits] = useState<CircuitMeta[]>([]);
-  const [prediction, setPrediction] = useState<PredictResponse | null>(null);
+  const [analysis, setAnalysis] = useState<WhatIfResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function PredictPage() {
       }));
   }, [toast]);
 
-  const form = useForm<PredictFormData>({
+  const form = useForm<WhatIfFormData>({
     resolver: zodResolver(predictRequestSchema),
     defaultValues: {
       circuitId: '',
@@ -68,16 +67,16 @@ export default function PredictPage() {
     },
   });
 
-  const onSubmit = async (data: PredictFormData) => {
+  const onSubmit = async (data: WhatIfFormData) => {
     setIsLoading(true);
-    setPrediction(null);
+    setAnalysis(null);
     try {
-      const result = await predict(data);
-      setPrediction(result);
+      const result = await whatIf(data);
+      setAnalysis(result);
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Prediction Failed",
+        title: "Analysis Failed",
         description: error instanceof Error ? error.message : "An unknown error occurred.",
       });
     } finally {
@@ -86,12 +85,12 @@ export default function PredictPage() {
   };
 
   return (
-    <div className="grid items-start gap-8 md:grid-cols-2 lg:grid-cols-5">
+    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
       <Card className="lg:col-span-2">
         <CardHeader>
-          <CardTitle>Prediction Inputs</CardTitle>
+          <CardTitle>What-If Scenario</CardTitle>
           <CardDescription>
-            Configure the race scenario to predict the outcome.
+            Configure a base scenario to analyze its sensitivity to starting grid position.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -118,28 +117,6 @@ export default function PredictPage() {
                       </SelectContent>
                     </Select>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="gridPosition"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex justify-between">
-                      <FormLabel>Grid Position</FormLabel>
-                      <span className="text-sm text-muted-foreground">{field.value}</span>
-                    </div>
-                    <FormControl>
-                       <Slider
-                          min={1}
-                          max={20}
-                          step={1}
-                          value={[field.value]}
-                          onValueChange={(vals) => field.onChange(vals[0])}
-                        />
-                    </FormControl>
                   </FormItem>
                 )}
               />
@@ -192,69 +169,29 @@ export default function PredictPage() {
               
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Predict Finish Position
+                Run Sensitivity Analysis
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
 
-      <div className="lg:col-span-3 space-y-8">
-        {prediction ? (
-          <>
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle>P50 Finish</CardTitle>
-                   <CardDescription>Median</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{prediction.prediction.finishP50.toFixed(1)}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Finish Range</CardTitle>
-                  <CardDescription>P10 - P90</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {prediction.prediction.finishP10.toFixed(1)} - {prediction.prediction.finishP90.toFixed(1)}
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Top 3 Probability</CardTitle>
-                   <CardDescription>Podium Chance</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {(prediction.top3.probability * 100).toFixed(1)}%
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-            <PositionDistributionChart data={prediction.positionProbs} />
-            <div className="mt-6">
-              <ExplanationCard
-                featureImpacts={prediction.explanation?.featureImpacts ?? []}
-              />
-            </div>
-          </>
+      <div className="lg:col-span-3">
+        {analysis ? (
+          <WhatIfGridChart data={analysis.series} />
         ) : (
           <Card className="flex flex-col items-center justify-center min-h-[400px] text-center">
             <CardHeader>
-              <CardTitle>Awaiting Prediction</CardTitle>
+              <CardTitle>Awaiting Analysis</CardTitle>
               <CardDescription>
-                {isLoading ? 'Running simulation...' : 'Fill out the form to see the predicted race outcome.'}
+                {isLoading ? 'Running sensitivity analysis...' : 'Fill out the form to see the results.'}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {isLoading ? (
                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
               ) : (
-                <Compass className="h-12 w-12 text-muted-foreground" />
+                <Variable className="h-12 w-12 text-muted-foreground" />
               )}
             </CardContent>
           </Card>
