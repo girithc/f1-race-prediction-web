@@ -34,6 +34,7 @@ import type { CircuitMeta, PredictResponse } from '@/lib/types';
 import { getMetadata, predict } from '@/lib/api-client';
 import { PitStopInput } from '@/components/pit-stop-input';
 import { PositionDistributionChart } from '@/components/charts/position-distribution-chart';
+import ExplanationCard from '@/components/explanation-card';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Compass } from 'lucide-react';
 
@@ -85,7 +86,7 @@ export default function PredictPage() {
   };
 
   return (
-    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
+    <div className="grid items-start gap-8 md:grid-cols-2 lg:grid-cols-5">
       <Card className="lg:col-span-2">
         <CardHeader>
           <CardTitle>Prediction Inputs</CardTitle>
@@ -235,6 +236,11 @@ export default function PredictPage() {
               </Card>
             </div>
             <PositionDistributionChart data={prediction.positionProbs} />
+            <div className="mt-6">
+              <ExplanationCard
+                featureImpacts={prediction.explanation?.featureImpacts ?? []}
+              />
+            </div>
           </>
         ) : (
           <Card className="flex flex-col items-center justify-center min-h-[400px] text-center">
