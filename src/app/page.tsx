@@ -92,12 +92,7 @@ export default async function DashboardPage() {
             <Link href="/compare" className="flex items-center gap-2 hover:text-primary">
               <BarChart3 size={16} /> Compare Strategies
             </Link>
-            <Link href="/whatif" className="flex items-center gap-2 hover:text-primary">
-              <Variable size={16} /> What-If Analysis
-            </Link>
-            <Link href="/advisor" className="flex items-center gap-2 hover:text-primary">
-              <Bot size={16} /> AI Advisor
-            </Link>
+
             <Link href="/strategy" className="flex items-center gap-2 hover:text-primary">
               <Activity size={16} /> In-Race LSTM Predictor
             </Link>
